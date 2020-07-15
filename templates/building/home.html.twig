@@ -1,0 +1,50 @@
+{% extends('base.html.twig') %}
+
+
+
+{% block body %}
+    <div class="container">
+        <h2 class="m-2">Building info
+            <span class="ml-5">
+                <a href="{{ path('add') }}"><button type="button" class="btn btn-primary" >Add</button></a>
+            </span>
+            <span class="ml-1">
+                <a href="{{ path('add') }}"><button type="button" class="btn btn-warning" >Edit</button></a>
+            </span>
+            <span class="ml-1">
+                <a href="{{ path('add') }}"><button type="button" class="btn btn-danger" >Delete</button></a>
+            </span>
+        </h2>
+
+        <table class="table w-50 m-3 table-striped">
+            <thead>
+                <tr>
+                    <th>Address</th>
+                    <th>Number</th>
+                    <th>Windows</th>
+                    <th>Overtime</th>
+                    <th>Washed On</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for building in buildings %}
+                <tr>
+                    <td>{{ building.name }}</td>
+                    <td>{{ building.number }}</td>
+                    <td>{{ building.windows }}</td>
+                    <td>{{ building.overtime }}</td>
+                    <td>{{ building.dateWashed|date('m-d-Y') }}</td>
+                    <td><span class="ml-1">
+                <a href="{{ path('add') }}"><button type="button" class="btn btn-warning" >Edit</button></a>
+            </span>
+                    <span class="mt-1">
+                <a href="{{ path('add') }}"><button type="button" class="btn btn-danger" >Delete</button></a>
+            </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
