@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List of employees{% endblock %}
+
+{% block body %}
+    {% for success in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ success }}
+        </div>
+    {% endfor %}
+
+
+    <div class="container">
+        <h2>List of employees</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Employee's name</th>
+                <th>Employed on</th>
+                <th>Number of Buildings</th>
+                <th>Actions <span class="ml-2"><a href="{{ path('add_employee') }}"><button class="btn btn-primary">Add New Employee</button></a></span></th>
+            </tr>
+        </thead>
+        <tbody>
+    {% for employee in employees %}
+        <tr>
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.employedOnDate|date('m-d-Y') }}</td>
+            <td>{{ employee.numberOfBuildings }}</td>
+            <td>
+                <span><a href="{{ path('edit_employee',{id:employee.id}) }}"><button class="btn btn-warning">Edit</button></a></span>
+                <span><a href="{{ path('delete_employee',{id:employee.id}) }}"><button class="btn btn-danger">Delete</button></a></span>
+            </td>
+        </tr>
+
+    {% endfor %}
+
+        </tbody>
+
+    </table>
+    </div>
+{% endblock %}

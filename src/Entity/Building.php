@@ -20,7 +20,12 @@ class Building
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $address;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $city;
 
     /**
      * @ORM\Column(type="integer")
@@ -42,19 +47,21 @@ class Building
      */
     private $date_washed;
 
+
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getAddress(): ?string
     {
-        return $this->name;
+        return $this->address;
     }
 
-    public function setName(string $name): self
+    public function setAddress(string $address): self
     {
-        $this->name = $name;
+        $this->address = $address;
 
         return $this;
     }
@@ -103,6 +110,18 @@ class Building
     public function setDateWashed(\DateTimeInterface $date_washed): self
     {
         $this->date_washed = $date_washed;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List of offices{% endblock %}
+
+{% block body %}
+    {% for success in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ success }}
+        </div>
+    {% endfor %}
+
+
+    <div class="container">
+        <h2>List of offices</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Office Address</th>
+                <th>Number</th>
+                <th>Floors</th>
+                <th>Working hours</th>
+                <th>Employees needed to clean</th>
+                <th>Actions <span class="ml-2"><a href="{{ path('add_office') }}"><button class="btn btn-primary">Add New Office</button></a></span></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for office in offices %}
+                <tr>
+                    <td>{{ office.address }}</td>
+                    <td>{{ office.number }}</td>
+                    <td>{{ office.floors }}</td>
+                    <td>{{ office.workingHours }}</td>
+                    <td>{{ office.employeesWorkingOnCleaning }}</td>
+
+                    <td>
+                        <span><a href="{{ path('edit_office',{id:office.id}) }}"><button class="btn btn-warning">Edit</button></a></span>
+                        <span><a href="{{ path('delete_office',{id:office.id}) }}"><button class="btn btn-danger">Delete</button></a></span>
+                    </td>
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+    </div>
+{% endblock %}

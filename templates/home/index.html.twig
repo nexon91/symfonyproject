@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+    <div class="w-25 float-right">
+
+        <table class="table table-hover table-dark">
+            <thead class="thead-light">
+                <tr>
+                    <th>Last Employees:</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for employee in lastAddedEmployee %}
+                <tr>
+
+                    <td class="text-center"><a class="text-white"href="{{ path('edit_employee', {'id': employee.id}) }}">{{  employee.name }}</a></td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+            <thead class="thead-light">
+                <tr>
+                    <th>Last Buildings:</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for building in lastAddedBuilding %}
+                <tr>
+
+                    <td class="text-center"><a class="text-white"href="{{ path('edit', {'id': building.id}) }}">{{  building.address }}</a></td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+
+            <thead class="thead-light">
+            <tr>
+                <th>Last Offices:</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for office in lastAddedOffice %}
+                <tr>
+
+                    <td class="text-center"><a class="text-white"href="{{ path('edit_office', {'id': office.id}) }}">{{  office.address }}</a></td>
+
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
