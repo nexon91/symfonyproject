@@ -1,50 +1,101 @@
 {% extends('base.html.twig') %}
 
+{% block title %}List of buildings{% endblock %}
 
 
 {% block body %}
     <div class="container">
-        <h2 class="m-2">Building info
+
+        <h2 class="m-2">Building info ({{ pagination.getTotalItemCount }} buildings)
             <span class="ml-5">
                 <a href="{{ path('add') }}"><button type="button" class="btn btn-primary" >Add</button></a>
             </span>
             <span class="ml-1">
-                <a href="{{ path('add') }}"><button type="button" class="btn btn-warning" >Edit</button></a>
+                <a href=""><button type="button" class="btn btn-warning checkbox-show" id="edit" >Edit</button></a>
             </span>
             <span class="ml-1">
-                <a href="{{ path('add') }}"><button type="button" class="btn btn-danger" >Delete</button></a>
+                <a href=""><button type="button" class="btn btn-danger" >Delete</button></a>
             </span>
         </h2>
 
-        <table class="table w-50 m-3 table-striped">
+        <table class="table-responsive-sd w-75 m-3 table-striped">
             <thead>
                 <tr>
+                    <th><input type="checkbox" id="check-all" onclick="toggle(this)"></th>
                     <th>Address</th>
                     <th>Number</th>
+                    <th>City</th>
                     <th>Windows</th>
                     <th>Overtime</th>
-                    <th>Washed On</th>
+                    <th>Washed On *</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                {% for building in buildings %}
+                {% for building in pagination %}
                 <tr>
-                    <td>{{ building.name }}</td>
+                    <td><input type="checkbox" id="{{ building.id }} " ></td>
+                    <td>{{ building.address }}</td>
                     <td>{{ building.number }}</td>
+                    <td>{{ building.city }}</td>
                     <td>{{ building.windows }}</td>
                     <td>{{ building.overtime }}</td>
                     <td>{{ building.dateWashed|date('m-d-Y') }}</td>
                     <td><span class="ml-1">
-                <a href="{{ path('add') }}"><button type="button" class="btn btn-warning" >Edit</button></a>
+                <a href="{{ path('edit', {
+                        id:building.id
+                    })
+                }}"><button type="button" class="btn btn-warning" >Edit</button></a>
             </span>
                     <span class="mt-1">
-                <a href="{{ path('add') }}"><button type="button" class="btn btn-danger" >Delete</button></a>
+                <a href="{{ path('delete', {
+            id:building.id}) }}"><button type="button" class="btn btn-danger" >Delete</button></a>
             </span>
                     </td>
                 </tr>
+
                 {% endfor %}
+
             </tbody>
+
+
         </table>
+        <br>
+        <p class="small">* mm/dd/yyyy</p>
+        <div class="w-75 d-flex justify-content-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+
     </div>
+
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+
+        $(document).ready(function(){
+            $('.checkbox-show').click(function () {
+                $('#check-all').toggle()
+            });
+        });
+    </script>
+
+    <script>
+        /*
+        Not implemented yet
+        $('.select-all').click(function(event){
+            if(this.checked){
+                $(':checkbox').each(function () {
+                    this.checked = true
+                })
+            }
+        })
+        */
+
+    </script>
+
+
+{% endblock %}
+

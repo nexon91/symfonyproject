@@ -13,9 +13,13 @@ return [
         '/_profiler/search_bar' => [[['_route' => '_profiler_search_bar', '_controller' => 'web_profiler.controller.profiler::searchBarAction'], null, null, null, false, false, null]],
         '/_profiler/phpinfo' => [[['_route' => '_profiler_phpinfo', '_controller' => 'web_profiler.controller.profiler::phpinfoAction'], null, null, null, false, false, null]],
         '/_profiler/open' => [[['_route' => '_profiler_open_file', '_controller' => 'web_profiler.controller.profiler::openAction'], null, null, null, false, false, null]],
-        '/' => [[['_route' => 'building', '_controller' => 'App\\Controller\\BuildingController::index'], null, null, null, false, false, null]],
-        '/building' => [[['_route' => 'home', '_controller' => 'App\\Controller\\BuildingController::home'], null, null, null, true, false, null]],
+        '/buildings' => [[['_route' => 'buildings', '_controller' => 'App\\Controller\\BuildingController::home'], null, null, null, false, false, null]],
         '/building/add' => [[['_route' => 'add', '_controller' => 'App\\Controller\\BuildingController::add'], null, null, null, false, false, null]],
+        '/employees' => [[['_route' => 'employees', '_controller' => 'App\\Controller\\EmployeeController::index'], null, null, null, false, false, null]],
+        '/employee/add' => [[['_route' => 'add_employee', '_controller' => 'App\\Controller\\EmployeeController::addEmployee'], null, null, null, false, false, null]],
+        '/' => [[['_route' => 'index', '_controller' => 'App\\Controller\\HomeController::index'], null, null, null, false, false, null]],
+        '/offices' => [[['_route' => 'offices', '_controller' => 'App\\Controller\\OfficeController::home'], null, null, null, false, false, null]],
+        '/office/add' => [[['_route' => 'add_office', '_controller' => 'App\\Controller\\OfficeController::addOffice'], null, null, null, false, false, null]],
     ],
     [ // $regexpList
         0 => '{^(?'
@@ -38,6 +42,14 @@ return [
                     .'|edit/([^/]++)(*:195)'
                     .'|delete/([^/]++)(*:218)'
                 .')'
+                .'|/employee/(?'
+                    .'|edit/(\\d+)(*:250)'
+                    .'|delete/(\\d+)(*:270)'
+                .')'
+                .'|/office/(?'
+                    .'|edit/(\\d+)(*:300)'
+                    .'|delete/(\\d+)(*:320)'
+                .')'
             .')/?$}sDu',
     ],
     [ // $dynamicRoutes
@@ -49,8 +61,12 @@ return [
         149 => [[['_route' => '_profiler_exception_css', '_controller' => 'web_profiler.controller.exception_panel::stylesheet'], ['token'], null, null, false, false, null]],
         159 => [[['_route' => '_profiler', '_controller' => 'web_profiler.controller.profiler::panelAction'], ['token'], null, null, false, true, null]],
         195 => [[['_route' => 'edit', '_controller' => 'App\\Controller\\BuildingController::edit'], ['id'], null, null, false, true, null]],
-        218 => [
-            [['_route' => 'delete', '_controller' => 'App\\Controller\\BuildingController::delete'], ['id'], null, null, false, true, null],
+        218 => [[['_route' => 'delete', '_controller' => 'App\\Controller\\BuildingController::delete'], ['id'], null, null, false, true, null]],
+        250 => [[['_route' => 'edit_employee', '_controller' => 'App\\Controller\\EmployeeController::editEmployee'], ['id'], null, null, false, true, null]],
+        270 => [[['_route' => 'delete_employee', '_controller' => 'App\\Controller\\EmployeeController::deleteEmployee'], ['id'], null, null, false, true, null]],
+        300 => [[['_route' => 'edit_office', '_controller' => 'App\\Controller\\OfficeController::editOffice'], ['id'], null, null, false, true, null]],
+        320 => [
+            [['_route' => 'delete_office', '_controller' => 'App\\Controller\\OfficeController::deleteOffice'], ['id'], null, null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],
     ],
