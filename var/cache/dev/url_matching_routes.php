@@ -20,6 +20,11 @@ return [
         '/' => [[['_route' => 'index', '_controller' => 'App\\Controller\\HomeController::index'], null, null, null, false, false, null]],
         '/offices' => [[['_route' => 'offices', '_controller' => 'App\\Controller\\OfficeController::home'], null, null, null, false, false, null]],
         '/office/add' => [[['_route' => 'add_office', '_controller' => 'App\\Controller\\OfficeController::addOffice'], null, null, null, false, false, null]],
+        '/login' => [[['_route' => 'login', '_controller' => 'App\\Controller\\SecurityController::login'], null, null, null, false, false, null]],
+        '/logout' => [[['_route' => 'logout', '_controller' => 'App\\Controller\\SecurityController::logout'], null, null, null, false, false, null]],
+        '/users' => [[['_route' => 'users', '_controller' => 'App\\Controller\\UserController::index'], null, null, null, false, false, null]],
+        '/user/add' => [[['_route' => 'add_user', '_controller' => 'App\\Controller\\UserController::addUser'], null, null, null, false, false, null]],
+        '/user/upload' => [[['_route' => 'user_upload', '_controller' => 'App\\Controller\\UserController::uploadFile'], null, null, null, true, false, null]],
     ],
     [ // $regexpList
         0 => '{^(?'
@@ -50,6 +55,11 @@ return [
                     .'|edit/(\\d+)(*:300)'
                     .'|delete/(\\d+)(*:320)'
                 .')'
+                .'|/user/(\\d+)(*:340)'
+                .'|/media/cache/resolve/(?'
+                    .'|([A-z0-9_-]*)/rc/([^/]++)/(.+)(*:402)'
+                    .'|([A-z0-9_-]*)/(.+)(*:428)'
+                .')'
             .')/?$}sDu',
     ],
     [ // $dynamicRoutes
@@ -65,8 +75,11 @@ return [
         250 => [[['_route' => 'edit_employee', '_controller' => 'App\\Controller\\EmployeeController::editEmployee'], ['id'], null, null, false, true, null]],
         270 => [[['_route' => 'delete_employee', '_controller' => 'App\\Controller\\EmployeeController::deleteEmployee'], ['id'], null, null, false, true, null]],
         300 => [[['_route' => 'edit_office', '_controller' => 'App\\Controller\\OfficeController::editOffice'], ['id'], null, null, false, true, null]],
-        320 => [
-            [['_route' => 'delete_office', '_controller' => 'App\\Controller\\OfficeController::deleteOffice'], ['id'], null, null, false, true, null],
+        320 => [[['_route' => 'delete_office', '_controller' => 'App\\Controller\\OfficeController::deleteOffice'], ['id'], null, null, false, true, null]],
+        340 => [[['_route' => 'user_profile', '_controller' => 'App\\Controller\\UserController::user_profile'], ['id'], null, null, false, true, null]],
+        402 => [[['_route' => 'liip_imagine_filter_runtime', '_controller' => 'Liip\\ImagineBundle\\Controller\\ImagineController::filterRuntimeAction'], ['filter', 'hash', 'path'], ['GET' => 0], null, false, true, null]],
+        428 => [
+            [['_route' => 'liip_imagine_filter', '_controller' => 'Liip\\ImagineBundle\\Controller\\ImagineController::filterAction'], ['filter', 'path'], ['GET' => 0], null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],
     ],

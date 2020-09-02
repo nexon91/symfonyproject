@@ -1,0 +1,18 @@
+{% extends('base.html.twig') %}
+
+{% block title %}Upload an file{% endblock %}
+
+{% block body %}
+<div class="container">
+    <form action="" enctype="multipart/form-data" method="post">
+        {{ form_start(userForm) }}
+            {{ form_row(userForm.username) }}
+            {{ form_row(userForm.password) }}
+            {{ form_row(userForm.email) }}
+            {{ form_row(userForm.imageFile) }}
+        {{ form_end(userForm) }}
+    </form>
+
+
+</div>
+{% endblock %}

@@ -6,22 +6,21 @@
 {% block body %}
     <div class="container">
 
-        <h2 class="m-2">Building info ({{ pagination.getTotalItemCount }} buildings)
+        <h2 class="">Building info ({{ pagination.getTotalItemCount }} buildings)
             <span class="ml-5">
                 <a href="{{ path('add') }}"><button type="button" class="btn btn-primary" >Add</button></a>
             </span>
-            <span class="ml-1">
+            {#<span class="ml-1">
                 <a href=""><button type="button" class="btn btn-warning checkbox-show" id="edit" >Edit</button></a>
             </span>
             <span class="ml-1">
                 <a href=""><button type="button" class="btn btn-danger" >Delete</button></a>
-            </span>
+            </span>#}
         </h2>
 
-        <table class="table-responsive-sd w-75 m-3 table-striped">
+        <table class="table table-responsive table-striped">
             <thead>
                 <tr>
-                    <th><input type="checkbox" id="check-all" onclick="toggle(this)"></th>
                     <th>Address</th>
                     <th>Number</th>
                     <th>City</th>
@@ -34,7 +33,7 @@
             <tbody>
                 {% for building in pagination %}
                 <tr>
-                    <td><input type="checkbox" id="{{ building.id }} " ></td>
+
                     <td>{{ building.address }}</td>
                     <td>{{ building.number }}</td>
                     <td>{{ building.city }}</td>
@@ -73,28 +72,8 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script>
 
-        $(document).ready(function(){
-            $('.checkbox-show').click(function () {
-                $('#check-all').toggle()
-            });
-        });
-    </script>
 
-    <script>
-        /*
-        Not implemented yet
-        $('.select-all').click(function(event){
-            if(this.checked){
-                $(':checkbox').each(function () {
-                    this.checked = true
-                })
-            }
-        })
-        */
-
-    </script>
 
 
 {% endblock %}
