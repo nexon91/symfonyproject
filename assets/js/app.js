@@ -14,5 +14,5 @@ import '../css/app.css';
 console.log('Hello Webpack Encore! Edit me in assets/js/app.js.');
 
 // image inclusion
-const imagesContext = require.context('../images/', false, /\.(png|jpg|jpeg|gif|ico|svg|webp)$/);
+const imagesContext = require.context('../images/', true, /\.(png|jpg|jpeg|gif|ico|svg|webp)$/);
 imagesContext.keys().forEach(imagesContext);
