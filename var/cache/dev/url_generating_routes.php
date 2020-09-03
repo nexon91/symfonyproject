@@ -28,4 +28,12 @@ return [
     'add_office' => [[], ['_controller' => 'App\\Controller\\OfficeController::addOffice'], [], [['text', '/office/add']], [], []],
     'edit_office' => [['id'], ['_controller' => 'App\\Controller\\OfficeController::editOffice'], ['id' => '\\d+'], [['variable', '/', '\\d+', 'id', true], ['text', '/office/edit']], [], []],
     'delete_office' => [['id'], ['_controller' => 'App\\Controller\\OfficeController::deleteOffice'], ['id' => '\\d+'], [['variable', '/', '\\d+', 'id', true], ['text', '/office/delete']], [], []],
+    'login' => [[], ['_controller' => 'App\\Controller\\SecurityController::login'], [], [['text', '/login']], [], []],
+    'logout' => [[], ['_controller' => 'App\\Controller\\SecurityController::logout'], [], [['text', '/logout']], [], []],
+    'users' => [[], ['_controller' => 'App\\Controller\\UserController::index'], [], [['text', '/users']], [], []],
+    'user_profile' => [['id'], ['_controller' => 'App\\Controller\\UserController::user_profile'], ['id' => '\\d+'], [['variable', '/', '\\d+', 'id', true], ['text', '/user']], [], []],
+    'add_user' => [[], ['_controller' => 'App\\Controller\\UserController::addUser'], [], [['text', '/user/add']], [], []],
+    'user_upload' => [[], ['_controller' => 'App\\Controller\\UserController::uploadFile'], [], [['text', '/user/upload/']], [], []],
+    'liip_imagine_filter_runtime' => [['filter', 'hash', 'path'], ['_controller' => 'Liip\\ImagineBundle\\Controller\\ImagineController::filterRuntimeAction'], ['filter' => '[A-z0-9_-]*', 'path' => '.+'], [['variable', '/', '.+', 'path', true], ['variable', '/', '[^/]++', 'hash', true], ['text', '/rc'], ['variable', '/', '[A-z0-9_-]*', 'filter', true], ['text', '/media/cache/resolve']], [], []],
+    'liip_imagine_filter' => [['filter', 'path'], ['_controller' => 'Liip\\ImagineBundle\\Controller\\ImagineController::filterAction'], ['filter' => '[A-z0-9_-]*', 'path' => '.+'], [['variable', '/', '.+', 'path', true], ['variable', '/', '[A-z0-9_-]*', 'filter', true], ['text', '/media/cache/resolve']], [], []],
 ];

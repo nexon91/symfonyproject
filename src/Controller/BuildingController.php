@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class BuildingController extends AbstractController
 {
@@ -44,18 +46,22 @@ class BuildingController extends AbstractController
      * @param EntityManagerInterface $em
      * @param Request $request
      *
+     * @param ValidatorInterface $validator
      * @return RedirectResponse|Response
      */
 
-    public function add(EntityManagerInterface $em,Request $request){
+    public function add(EntityManagerInterface $em,Request $request,ValidatorInterface $validator){
 
         $form = $this->createForm(BuildingType::class);
         $form->handleRequest($request);
+
+
 
         if ($form->isSubmitted() && $form->isValid()){
             //dd($form->getData());
             $data = $form->getData();
             $building = new Building();
+
             $building->setAddress($data['address']);
             $building->setCity($data['city']);
             $building->setNumber($data['number']);
@@ -63,6 +69,14 @@ class BuildingController extends AbstractController
             $building->setOvertime($data['overtime']);
             $building->setDateWashed($data['date_washed']);
 
+            // test for errors
+            // if any error -> goes to template validation
+            $errors = $validator->validate($building);
+            if (count($errors) > 0){
+                return $this->render('building/validation.html.twig', [
+                    'errors' => $errors,
+                ]);
+            }
             $em->persist($building);
             $em->flush();
 

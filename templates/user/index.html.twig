@@ -1,0 +1,15 @@
+{% extends('base.html.twig') %}
+
+{% block title %}Upload an file{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <form action="{{ path('user_upload') }}" enctype="multipart/form-data" method="post">
+
+            <input type="file" name="image">
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+
+
+    </div>
+{% endblock %}

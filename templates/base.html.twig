@@ -2,19 +2,20 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Welcome to gestisci azienda!{% endblock %}</title>
 
         {% block stylesheets %}
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
-
+            <link rel="stylesheet" href="{{ asset('build/app.css') }}">
 
         {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('/build/images/favicon.ico') }}">
     </head>
     <body>
         {% block navbar %}
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark {{ app.session.flashbag.peek('message') > 0 ? '' : 'mb-4' }}">
                 <div class="container">
-                    <a class="navbar-brand" href="{{ path('index') }}">Building Manager</a>
+                    <a class="navbar-brand" href="{{ path('index') }}">Company Manager</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -33,18 +34,41 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('employees') }}">Employees</a>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="" id="dropdown07" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                                <div class="dropdown-menu" aria-labelledby="dropdown07">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
-                            </li>
+
                         </ul>
                         <form class="form-inline my-2 my-md-0">
-                            <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+                            <input class="form-control" type="text" placeholder="Search not implemented yet" aria-label="Search">
                         </form>
+
+                        <ul class=" navbar-nav ml-5">
+                            {% if app.user %}
+
+                                <li class="nav-item">
+
+                                    <div class="nav-item dropdown show">
+
+                                       <a class="btn btn-secondary" href=""  id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <img src="{{ asset('/build/images/user.png') }}">
+                                        </a>
+
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            <a class="dropdown-item" href="{{ path('user_profile', {id:app.user.id})}}">{{ app.user.username }}</a>
+                                            <a class="dropdown-item" href="#">Settings</a>
+                                            <a class="dropdown-item" href="{{ path('logout') }}">Logout</a>
+                                        </div>
+
+                                    </div>
+
+                                </li>
+
+                            {% endif %}
+                            {% if not app.user %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('login') }}">Login</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+
                     </div>
                 </div>
             </nav>
@@ -57,6 +81,16 @@
         {% block body %}{% endblock %}
         {% block javascripts %}
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+
+            <script>
+                $('.custom-file-input').on('change',function (event) {
+                    var inputFile = event.currentTarget;
+                    $(inputFile).parent()
+                        .find('.custom-file-label')
+                        .html(inputFile.files[0].name);
+                });
+            </script>
         {% endblock %}
     </body>
 </html>

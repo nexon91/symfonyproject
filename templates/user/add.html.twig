@@ -1,0 +1,30 @@
+{% extends('base.html.twig') %}
+
+{% block title %}Upload an file{% endblock %}
+
+{% block body %}
+
+        <div class="container">
+
+        {{ form_start(userForm) }}
+        {{ form_row(userForm.username) }}
+        {{ form_row(userForm.password) }}
+        {{ form_row(userForm.email) }}
+        {{ form_row(userForm.imageFile,{
+                attr : {
+                     placeholder : 'Select an user image'
+                }
+        }) }}
+
+        <button type="submit" class="btn btn-primary">Add user</button>
+
+        {{ form_end(userForm) }}
+
+
+        </div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}

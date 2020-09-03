@@ -28,6 +28,7 @@ use Composer\Installer\NoopInstaller;
 use Composer\Installer\PackageEvent;
 use Composer\Installer\PackageEvents;
 use Composer\Installer\SuggestedPackagesReporter;
+use Composer\IO\ConsoleIO;
 use Composer\IO\IOInterface;
 use Composer\IO\NullIO;
 use Composer\Json\JsonFile;
@@ -46,7 +47,9 @@ use Composer\Repository\RepositoryManager;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Flex\Event\UpdateEvent;
+use Symfony\Flex\Unpack\Operation;
 use Symfony\Thanks\Thanks;
 
 /**
@@ -55,8 +58,16 @@ use Symfony\Thanks\Thanks;
  */
 class Flex implements PluginInterface, EventSubscriberInterface
 {
+    /**
+     * @var Composer
+     */
     private $composer;
+
+    /**
+     * @var IOInterface
+     */
     private $io;
+
     private $config;
     private $options;
     private $configurator;
@@ -233,7 +244,7 @@ class Flex implements PluginInterface, EventSubscriberInterface
                     $input->setArgument('packages', $resolver->resolve($input->getArgument('packages'), self::$aliasResolveCommands[$command]));
                 }
 
-                if ($input->hasOption('no-suggest')) {
+                if (version_compare('2.0.0', PluginInterface::PLUGIN_API_VERSION, '>') && $input->hasOption('no-suggest')) {
                     $input->setOption('no-suggest', true);
                 }
             }
@@ -313,6 +324,10 @@ class Flex implements PluginInterface, EventSubscriberInterface
             return;
         }
 
+        // Remove LICENSE (which do not apply to the user project)
+        @unlink('LICENSE');
+
+        // Update composer.json (project is proprietary by default)
         $json = new JsonFile(Factory::getComposerFile());
         $contents = file_get_contents($json->getPath());
         $manipulator = new JsonManipulator($contents);
@@ -389,10 +404,12 @@ class Flex implements PluginInterface, EventSubscriberInterface
         }
 
         $sortPackages = $this->composer->getConfig()->get('sort-packages');
+        $unpackOp = new Operation(true, $sortPackages);
 
         foreach (['require', 'require-dev'] as $type) {
             if (isset($json['flex-'.$type])) {
                 foreach ($json['flex-'.$type] as $package => $constraint) {
+                    $unpackOp->addPackage($package, $constraint, 'require-dev' === $type);
                     $manipulator->addLink($type, $package, $constraint, $sortPackages);
                 }
 
@@ -416,6 +433,26 @@ class Flex implements PluginInterface, EventSubscriberInterface
         if (0 !== $status) {
             exit($status);
         }
+
+        $unpacker = new Unpacker($this->composer, new PackageResolver($this->downloader), $this->dryRun);
+        $result = $unpacker->unpack($unpackOp);
+        $unpacker->updateLock($result, $this->io);
+
+        if ($this->io instanceof ConsoleIO) {
+            \Closure::bind(function () {
+                $this->output->setVerbosity(OutputInterface::VERBOSITY_QUIET);
+            }, $this->io, $this->io)();
+        }
+
+        \Closure::bind(function ($locker) {
+            $this->locker = $locker;
+            $this->dumpAutoloader = false;
+            $this->runScripts = false;
+            $this->ignorePlatformReqs = true;
+            $this->update = false;
+        }, $this->installer, $this->installer)($this->composer->getLocker());
+
+        $this->installer->run();
     }
 
     public function install(Event $event = null)
@@ -436,11 +473,17 @@ class Flex implements PluginInterface, EventSubscriberInterface
             $this->io->writeError('');
             $this->io->writeError('What about running <comment>composer global require symfony/thanks && composer thanks</> now?');
             $this->io->writeError(sprintf('This will spread some %s by sending a %s to the GitHub repositories of your fellow package maintainers.', $love, $star));
-            $this->io->writeError('');
         }
+
+        $this->io->writeError('');
 
         if (!$recipes) {
             $this->lock->write();
+
+            if ($this->downloader->isEnabled()) {
+                $this->io->writeError('Run <comment>composer recipes</> at any time to see the status of your Symfony recipes.');
+                $this->io->writeError('');
+            }
 
             return;
         }
@@ -846,7 +889,7 @@ EOPHP
 
     private function formatOrigin(string $origin): string
     {
-        // symfony/translation:3.3@github.com/symfony/recipes:master
+        // symfony/translation:3.3@github.com/symfony/recipes:branch
         if (!preg_match('/^([^:]++):([^@]++)@(.+)$/', $origin, $matches)) {
             return $origin;
         }
