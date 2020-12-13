@@ -3175,7 +3175,7 @@ global-prefix@^1.0.1:
   dependencies:
     expand-tilde "^2.0.2"
     homedir-polyfill "^1.0.1"
-    ini "^1.3.4"
+    ini "^1.3.6"
     is-windows "^1.0.1"
     which "^1.2.14"
 
@@ -3184,7 +3184,7 @@ global-prefix@^3.0.0:
   resolved "https://registry.yarnpkg.com/global-prefix/-/global-prefix-3.0.0.tgz#fc85f73064df69f50421f47f883fe5b913ba9b97"
   integrity sha512-awConJSVCHVGND6x3tmMaKcQvwXLhjdkmomy2W+Goaui8YPgYgXJZewhg3fWC+DlfqqQuWg8AwqjGTD2nAPVWg==
   dependencies:
-    ini "^1.3.5"
+    ini "^1.3.6"
     kind-of "^6.0.2"
     which "^1.3.1"
 
